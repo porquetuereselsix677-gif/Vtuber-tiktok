@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -69,12 +69,12 @@
 
   <div class="controls">
     <button class="active" data-mood="normal">Normal</button>
+    <button data-mood="brillantes">Brillantes</button>
     <button data-mood="feliz">Feliz</button>
-    <button data-mood="enamorado">Enamorado</button>
+    <button data-mood="relajado">Relajado</button>
     <button data-mood="enojado">Enojado</button>
     <button data-mood="triste">Triste</button>
-    <button data-mood="relajado">Relajado</button>
-    <button data-mood="brillantes">Brillantes</button>
+    <button data-mood="enamorado">Enamorado</button>
     <button id="mouthBtn">Boca: Cerrada</button>
   </div>
 
@@ -92,13 +92,17 @@
         closed: "ojos-normal_boca-normal.png",
         open: "ojos-normal_boca-abierta.png"
       },
+      brillantes: {
+        closed: "ojos-brillantes_boca-cerrada.png",
+        open: "ojos-brillantes_boca-abierta.png"
+      },
       feliz: {
         closed: "ojos-feliz_boca-cerrada.png",
         open: "ojos-feliz_boca-abierta.png"
       },
-      enamorado: {
-        closed: "ojos-enamorado_boca-cerrada.png",
-        open: "ojos-enamorado_boca-abierta.png"
+      relajado: {
+        closed: "ojos-relajado_boca-cerrada.png",
+        open: "ojos-relajado_boca-abierta.png"
       },
       enojado: {
         closed: "ojos-enojado_boca-cerrada.png",
@@ -108,13 +112,9 @@
         closed: "ojos-triste_boca-cerrada.png",
         open: "ojos-triste_boca-abierta.png"
       },
-      relajado: {
-        closed: "ojos-relajado_boca-cerrada.png",
-        open: "ojos-relajado_boca-abierta.png"
-      },
-      brillantes: {
-        closed: "ojos-brillantes_boca-cerrada.png",
-        open: "ojos-brillantes_boca-abierta.png"
+      enamorado: {
+        closed: "ojos-enamorado_boca-cerrada.png",
+        open: "ojos-enamorado_boca-abierta.png"
       }
     };
 
@@ -133,5 +133,42 @@
       const moveX = nx * 22;
       const moveY = ny * 14;
       const tilt = nx * 8;
-      mochi.style
-    
+      mochi.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${tilt}deg)`;
+    }
+
+    window.addEventListener("pointermove", (e) => {
+      moveWithPointer(e.clientX, e.clientY);
+    });
+
+    window.addEventListener("pointerdown", (e) => {
+      moveWithPointer(e.clientX, e.clientY);
+    });
+
+    moodButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        moodButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        mood = btn.dataset.mood;
+        updateSprite();
+      });
+    });
+
+    mouthBtn.addEventListener("click", () => {
+      mouthOpen = !mouthOpen;
+      mouthBtn.textContent = mouthOpen ? "Boca: Abierta" : "Boca: Cerrada";
+      updateSprite();
+    });
+
+    setInterval(() => {
+      blinking = true;
+      updateSprite();
+      setTimeout(() => {
+        blinking = false;
+        updateSprite();
+      }, 160);
+    }, 3500);
+
+    updateSprite();
+  </script>
+</body>
+</html>
